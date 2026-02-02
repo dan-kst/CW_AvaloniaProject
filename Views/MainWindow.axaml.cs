@@ -4,6 +4,7 @@ using System;
 using CW_AvaloniaProject.Models;
 using CW_AvaloniaProject.Services;
 using CW_AvaloniaProject.Managers;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace CW_AvaloniaProject
@@ -32,7 +33,6 @@ namespace CW_AvaloniaProject
       UpdateListUI();
     }
 
-    // --- REQUIREMENT 4: EXCEPTION HANDLING ---
     public void OnAddClick(object sender, RoutedEventArgs e)
     {
       StatusText.Text = "";
@@ -56,7 +56,6 @@ namespace CW_AvaloniaProject
         }
         else // Domestic
         {
-          // Manual validation for Domestic (simulating Factory logic here for variety)
           string dest = TxtDest.Text ?? "";
           if (string.IsNullOrWhiteSpace(dest)) throw new ArgumentException("Destination required");
           if (!decimal.TryParse(TxtPrice.Text, out decimal price)) throw new ArgumentException("Invalid Price");
@@ -83,23 +82,41 @@ namespace CW_AvaloniaProject
       }
     }
 
-    // --- REQUIREMENT 5: LINQ OPERATIONS ---
+    // --- LINQ HANDLERS ---
 
-    public void OnShowAllClick(object sender, RoutedEventArgs e) { }
+    public void OnShowAllClick(object sender, RoutedEventArgs e)
+    {
+      UpdateListUI();
+      RevenueStatus.Text = "Showing all tours.";
+    }
 
-    public void OnSortDateClick(object sender, RoutedEventArgs e) { }
+    public void OnSearchClick(object sender, RoutedEventArgs e)
+    {
+      TourList.ItemsSource = _manager.SearchByDestination(TxtSearch.Text ?? "");
+    }
 
-    public void OnFilterCheapClick(object sender, RoutedEventArgs e) { }
+    public void OnSortDateClick(object sender, RoutedEventArgs e)
+    {
+      TourList.ItemsSource = _manager.GetToursSortedByDate(true);
+      RevenueStatus.Text = "Sorted by start date.";
+    }
 
-    public void OnFilterIntlClick(object sender, RoutedEventArgs e) { }
+    public void OnFilterCheapClick(object sender, RoutedEventArgs e)
+    {
+      TourList.ItemsSource = _manager.GetCheapTours(1000);
+      RevenueStatus.Text = "Showing tours under $1000 (Base Price).";
+    }
 
-    public void OnRevenueClick(object sender, RoutedEventArgs e) { }
-
-    // --- REQUIREMENT 6: DATABASE (SQL) ---
-
-    public void OnSaveDbClick(object sender, RoutedEventArgs e) { }
-
-    public void OnLoadDbClick(object sender, RoutedEventArgs e) { }
+    public void OnFilterIntlClick(object sender, RoutedEventArgs e)
+    {
+      TourList.ItemsSource = _manager.GetOnlyInternationalTours();
+      RevenueStatus.Text = "Filtered: International Tours only.";
+    }
+    public void OnRevenueClick(object sender, RoutedEventArgs e)
+    {
+      decimal total = _manager.CalculatePotentialRevenue();
+      RevenueStatus.Text = $"Total Potential Revenue: {total:C}";
+    }
 
     // --- HELPER FOR UI BINDING ---
     private void UpdateListUI()

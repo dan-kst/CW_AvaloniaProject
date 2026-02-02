@@ -27,12 +27,10 @@ namespace CW_AvaloniaProject.Managers
 
     // 1. FILTERING (Where)
     // Finds tours cheaper than a specific budget
-    public IEnumerable<TravelPackage> FilterByMaxPrice(decimal maxBudget)
+    public IEnumerable<TravelPackage> GetCheapTours(decimal maxPrice)
     {
-      // LINQ query syntax
-      // Uses polymorphism: CalculateTotalPrice() calls the specific child implementation
-      return _tours
-          .Where(t => t.CalculateTotalPrice() <= maxBudget);
+      // Note: CalculateTotalPrice() is called polymorphically here
+      return _tours.Where(t => t.BasePrice <= maxPrice);
     }
 
     // 2. SEARCHING (Where + String methods)
