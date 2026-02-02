@@ -27,12 +27,12 @@ namespace CW_AvaloniaProject.Models
       FlightInsurance = insurance;
     }
 
-    protected override decimal CalculateTotalPrice()
+    public override decimal CalculateTotalPrice()
     {
       return BasePrice + VisaCost + FlightInsurance;
     }
 
-    protected override string GetDescription()
+    public override string GetDescription()
     {
       return $"[International] {base.GetDescription()} | Visa Required: {(VisaCost > 0 ? "Yes" : "No")}";
     }

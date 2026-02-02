@@ -27,12 +27,12 @@ namespace CW_AvaloniaProject.Models
       TransportSurcharge = privateTransport ? 150.0m : 0m;
     }
 
-    protected override decimal CalculateTotalPrice()
+    public override decimal CalculateTotalPrice()
     {
       return BasePrice + TransportSurcharge;
     }
 
-    protected override string GetDescription()
+    public override string GetDescription()
     {
       return $"[Domestic] {base.GetDescription()} | Transport: {(IncludePrivateTransport ? "Private Bus" : "Self-Travel")}";
     }

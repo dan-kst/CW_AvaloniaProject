@@ -84,9 +84,9 @@ namespace CW_AvaloniaProject.Models
       System.Diagnostics.Debug.WriteLine($"Object {Id} (TravelPackage) is being finalized.");
     }
 
-    protected abstract decimal CalculateTotalPrice();
+    public abstract decimal CalculateTotalPrice();
 
-    protected virtual string GetDescription()
+    public virtual string GetDescription()
     {
       return $"Trip to {Destination} ({DurationDays} days) - Starts: {StartDate.ToShortDateString()}";
     }
