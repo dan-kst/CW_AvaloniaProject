@@ -5,11 +5,14 @@
     <Nullable>enable</Nullable>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <AssemblyName>CW_AvaloniaProject</AssemblyName>
+    <RootNamespace>CW_AvaloniaProject</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="Models\" />
-    <AvaloniaResource Include="Assets\**" />
+    <Folder Include="Services\" />
+    <Folder Include="Managers\" />
   </ItemGroup>
 
   <ItemGroup>

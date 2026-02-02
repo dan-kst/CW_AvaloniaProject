@@ -56,6 +56,8 @@ namespace CW_AvaloniaProject.Models
         _basePrice = value;
       }
     }
+    public string DisplayDescription => GetDescription();
+    public string DisplayPrice => $"{CalculateTotalPrice():C}";
 
     // Constructor without parameters
     public TravelPackage()
@@ -82,9 +84,9 @@ namespace CW_AvaloniaProject.Models
       System.Diagnostics.Debug.WriteLine($"Object {Id} (TravelPackage) is being finalized.");
     }
 
-    public abstract decimal CalculateTotalPrice();
+    protected abstract decimal CalculateTotalPrice();
 
-    public virtual string GetDescription()
+    protected virtual string GetDescription()
     {
       return $"Trip to {Destination} ({DurationDays} days) - Starts: {StartDate.ToShortDateString()}";
     }
