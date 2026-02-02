@@ -4,7 +4,7 @@ using System.IO;
 using Microsoft.Data.Sqlite;
 using CW_AvaloniaProject.Models;
 
-namespace CW_AvaloniaProject.Data
+namespace CW_AvaloniaProject.Services
 {
   public class DatabaseService
   {
@@ -18,7 +18,7 @@ namespace CW_AvaloniaProject.Data
       InitializeDatabase();
     }
 
-    // 1. Initialize DB (Create Table if it doesn't exist)
+    // Initialize DB (Create Table if it doesn't exist)
     private void InitializeDatabase()
     {
       using (var connection = new SqliteConnection(_connectionString))
@@ -26,7 +26,6 @@ namespace CW_AvaloniaProject.Data
         connection.Open();
 
         // SQL Command to create a single table for all tour types
-        // We use nullable columns (REAL NULL, INTEGER NULL) for fields specific to child classes
         string createTableQuery = @"
                     CREATE TABLE IF NOT EXISTS Tours (
                         Id TEXT PRIMARY KEY,
@@ -47,9 +46,19 @@ namespace CW_AvaloniaProject.Data
         }
       }
     }
+    public void ClearDatabase()
+    {
+      using (var connection = new SqliteConnection(_connectionString))
+      {
+        connection.Open();
+        using (var cmd = new SqliteCommand("DELETE FROM Tours", connection))
+        {
+          cmd.ExecuteNonQuery();
+        }
+      }
+    }
 
-    // 2. Save (INSERT)
-    // Requirement 6: Use SQL queries to store information
+    // Save (INSERT)
     public void SaveTour(TravelPackage tour)
     {
       using (var connection = new SqliteConnection(_connectionString))
@@ -98,7 +107,7 @@ namespace CW_AvaloniaProject.Data
       }
     }
 
-    // 3. Load (SELECT)
+    // Load (SELECT)
     public List<TravelPackage> LoadTours()
     {
       var tours = new List<TravelPackage>();
